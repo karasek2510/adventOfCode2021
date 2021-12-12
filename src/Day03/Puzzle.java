@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Puzzle {
     public static void main(String[] args) {
 
-        // Puzzle 1
+        System.out.println("Puzzle 1");
 
         try {
             File file = new File("Inputs\\day03.txt");
@@ -53,9 +53,30 @@ public class Puzzle {
             e.printStackTrace();
         }
 
-        // Puzzle 2
+        System.out.println("Puzzle 2");
+        try {
+            File file = new File("Inputs\\day03.txt");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String st;
+            ArrayList<String []> oxygen = new ArrayList<>();
+            ArrayList<String []> co2 = new ArrayList<>();
+            while ((st= br.readLine()) != null) {
+                if (st.isBlank()) {
+                    continue;
+                }
+                oxygen.add(st.split(""));
+                co2.add(st.split(""));
+            }
+            int oxygenRating = getRating(oxygen,true);
+            int co2Rating = getRating(co2,false);
+            System.out.println("Oxygen:" +oxygenRating);
+            System.out.println("CO2: " +co2Rating);
+            System.out.println("Multi: "+getRating(oxygen,true)*getRating(co2,false));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-       
+
     }
 
     /**
@@ -76,13 +97,13 @@ public class Puzzle {
                 }
             }
             if(mostCommon){
-                if(dataOne.size()>dataZero.size()){
+                if(dataOne.size()>=dataZero.size()){
                     data=dataOne;
                 }else{
                     data=dataZero;
                 }
             }else{
-                if(dataOne.size()>dataZero.size()){
+                if(dataOne.size()>=dataZero.size()){
                     data=dataZero;
                 }else{
                     data=dataOne;
