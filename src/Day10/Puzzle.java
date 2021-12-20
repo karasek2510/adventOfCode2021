@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Puzzle {
+    public static String[] bracketsBegin = {"(", "[", "{", "<"};
+    public static String[] bracketsClose = {")", "]", "}", ">"};
 
     public static void main(String[] args) {
         try {
@@ -18,31 +20,30 @@ public class Puzzle {
             while ((st = br.readLine()) != null) {
                 String[] symbols = st.split("");
                 String illegalCharacter = checkForErrors(symbols);
-                if(illegalCharacter==null){
+                if (illegalCharacter == null) {
                     incomplete.add(symbols);
                     continue;
                 }
-                String[] bracketsClose = {")","]","}",">"};
-                int[] bracketPoints1 = {3,57,1197,25137};
-                for(int i =0; i<4;i++){
-                    if(illegalCharacter.equals(bracketsClose[i])){
-                        sum+=bracketPoints1[i];
+                String[] bracketsClose = {")", "]", "}", ">"};
+                int[] bracketsPointsPuzzle1 = {3, 57, 1197, 25137};
+                for (int i = 0; i < 4; i++) {
+                    if (illegalCharacter.equals(bracketsClose[i])) {
+                        sum += bracketsPointsPuzzle1[i];
                         break;
                     }
                 }
             }
-            System.out.println("Puzzle1: "+sum);
+            System.out.println("Puzzle1: " + sum);
             ArrayList<Long> scores = new ArrayList<>();
-            for(String[] symbols : incomplete){
+            for (String[] symbols : incomplete) {
                 ArrayList<String> sequence = completeSequence(symbols);
                 long score = 0;
-                for(int i = sequence.size()-1;i>=0;i--){
-                    score*=5;
-                    String[] bracketsBegin = {"(","[","{","<"};
-                    int[] bracketsPoints2 = {1,2,3,4};
-                    for(int j =0; j<4;j++){
-                        if(sequence.get(i).equals(bracketsBegin[j])){
-                            score+=bracketsPoints2[j];
+                for (int i = sequence.size() - 1; i >= 0; i--) {
+                    score *= 5;
+                    int[] bracketsPointsPuzzle2 = {1, 2, 3, 4};
+                    for (int j = 0; j < 4; j++) {
+                        if (sequence.get(i).equals(bracketsBegin[j])) {
+                            score += bracketsPointsPuzzle2[j];
                             break;
                         }
                     }
@@ -50,25 +51,24 @@ public class Puzzle {
                 scores.add(score);
             }
             Collections.sort(scores);
-            long score = scores.get((int) Math.ceil(scores.size()/2));
+            long score = scores.get((int) Math.ceil(scores.size() / 2));
 
-            System.out.println("Puzzle2: "+score);
+            System.out.println("Puzzle2: " + score);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    public static String checkForErrors(String[] symbols){
+
+    public static String checkForErrors(String[] symbols) {
         ArrayList<String> stack = new ArrayList<>();
-        for(String symbol : symbols){
-            if(symbol.equals("(")||symbol.equals("{")||symbol.equals("<")||symbol.equals("[")){
+        for (String symbol : symbols) {
+            if (symbol.equals("(") || symbol.equals("{") || symbol.equals("<") || symbol.equals("[")) {
                 stack.add(symbol);
-            }else{
-                String[] bracketsBegin = {"(","{","<","["};
-                String[] bracketsClose = {")","}",">","]"};
-                for(int i =0; i<4;i++){
-                    if(symbol.equals(bracketsClose[i])) {
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (symbol.equals(bracketsClose[i])) {
                         if (stack.get(stack.size() - 1).equals(bracketsBegin[i])) {
                             stack.remove(stack.size() - 1);
                             break;
@@ -81,16 +81,15 @@ public class Puzzle {
         }
         return null;
     }
-    public static ArrayList<String> completeSequence(String[] symbols){
+
+    public static ArrayList<String> completeSequence(String[] symbols) {
         ArrayList<String> stack = new ArrayList<>();
-        for(String symbol : symbols){
-            if(symbol.equals("(")||symbol.equals("{")||symbol.equals("<")||symbol.equals("[")){
+        for (String symbol : symbols) {
+            if (symbol.equals("(") || symbol.equals("{") || symbol.equals("<") || symbol.equals("[")) {
                 stack.add(symbol);
-            }else{
-                String[] bracketsBegin = {"(","{","<","["};
-                String[] bracketsClose = {")","}",">","]"};
-                for(int i =0; i<4;i++){
-                    if(symbol.equals(bracketsClose[i])) {
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (symbol.equals(bracketsClose[i])) {
                         if (stack.get(stack.size() - 1).equals(bracketsBegin[i])) {
                             stack.remove(stack.size() - 1);
                         }
