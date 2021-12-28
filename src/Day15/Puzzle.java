@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class Puzzle {
 
-    public static int[][] shortestPath(int[][] map, int startX, int startY) {
+    public static int shortestPath(int[][] map, int startX, int startY, int destinationX, int destinationY) {
         long timeStart = System.currentTimeMillis();
         int nRow = map.length;
         int nCol = map[0].length;
@@ -24,16 +24,13 @@ public class Puzzle {
         }
         distances[startY][startX] = 0;
         visited[startY][startX] = true;
-        int visitedNumb = 1;
-        int nodesNumb = nRow * nCol;
         int xCurr;
         int yCurr;
-        while (visitedNumb <= nodesNumb) {
+        while(!visited[destinationY][destinationX]) {
             int[] tempNode = minXY(distances, visited);
             xCurr = tempNode[0];
             yCurr = tempNode[1];
             visited[yCurr][xCurr] = true;
-            visitedNumb++;
             for (int[] neighbour : findNeighbours(xCurr, yCurr, visited)) {
                 int tempX = neighbour[0];
                 int tempY = neighbour[1];
@@ -44,7 +41,7 @@ public class Puzzle {
             }
         }
         System.out.println("Time: " + (System.currentTimeMillis() - timeStart) / 1000);
-        return distances;
+        return distances[destinationY][destinationX];
     }
 
     public static int[] minXY(int[][] distances, boolean[][] visited) {
@@ -129,11 +126,11 @@ public class Puzzle {
         for (int i = 0; i < nRow; i++) {
             map[i] = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
         }
-        int[][] distances = shortestPath(map, 0, 0);
-        System.out.println("Puzzle1: " + distances[nRow - 1][nCol - 1]);
+        int distance = shortestPath(map, 0, 0,nCol-1,nRow-1);
+        System.out.println("Puzzle1: " + distance);
         int[][] trueMap = buildTrueMap(map);
-        distances = shortestPath(trueMap, 0, 0);
-        System.out.println("Puzzle2: " + distances[nRow * 5 - 1][nCol * 5 - 1]);
+        distance = shortestPath(trueMap, 0, 0,5*nCol-1,5*nRow-1);
+        System.out.println("Puzzle2: " + distance);
     }
 
 }
